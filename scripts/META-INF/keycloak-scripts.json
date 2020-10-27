@@ -1,0 +1,26 @@
+{
+    "authenticators": [
+        {
+            "name": "Admin only authenticator",
+            "fileName": "admin-only-authenticator.js",
+            "description": "Check if user has role admin"
+        }
+    ],
+    "mappers": [
+        {
+            "name": "Orchestra Cities tenants-roles mapper",
+            "fileName": "tenants-mapper.js",
+            "description": "Maps top users groups to tenants"
+        },
+        {
+            "name": "Orchestra Cities tenants-name mapper",
+            "fileName": "tenants-name-mapper.js",
+            "description": "Maps top users groups to tenants"
+        },
+        {
+            "name": "Orchestra Cities fiware services mapper",
+            "fileName": "services-mapper.js",
+            "description": "List services path accessible to users"
+        }
+    ]
+}
