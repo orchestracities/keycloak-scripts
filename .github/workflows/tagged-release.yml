@@ -12,6 +12,9 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
       - name: Build release
         run: sh build.sh
 
