@@ -12,10 +12,8 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      # ...
-      - name: "Build & test"
-        run: |
-          sh build.sh
+      - name: Build release
+        run: sh build.sh
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
