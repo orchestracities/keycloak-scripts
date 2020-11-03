@@ -31,7 +31,8 @@ function scanGroups(group){
             groups = found.get("groups");
             current = getGroup(groups, group.getName());
             if (! current ){
-                var newGroup = new HashMap(); 
+                var newGroup = new HashMap();
+                newGroup.put("id",group.getId());
                 newGroup.put("name", group.getName());
                 newGroup.put("is_servicepath", isServicePath(group));
                 newGroup.put("parent", group.getParent().getName());
