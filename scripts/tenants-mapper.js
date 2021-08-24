@@ -40,8 +40,7 @@ function scanGroups(group){
                 if (rep.getRealmRoles())
                     newGroup.put("realmRoles",rep.getRealmRoles());
                 if( keycloakSession.getContext().getClient()){
-                    var clientId = "resource_server";
-                    //var clientId = keycloakSession.getContext().getClient().getClientId();
+                    var clientId = keycloakSession.getContext().getClient().getClientId();
                     if(rep.getClientRoles().get(clientId)) newGroup.put("clientRoles",rep.getClientRoles().get(clientId));
                 } else {
                     var clients = realm.getClients();
