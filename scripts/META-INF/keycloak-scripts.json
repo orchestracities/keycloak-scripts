@@ -26,6 +26,11 @@
             "name": "Orchestra Cities client ID mapper",
             "fileName": "client-id-mapper.js",
             "description": "Sets client_check custom claim to current client ID"
+        },
+        {
+            "name": "Orchestra Cities tenant-group-roles mapper",
+            "fileName": "tenant-group-roles-mapper.js",
+            "description": "List roles and their tenants available to users"
         }
     ]
 }
