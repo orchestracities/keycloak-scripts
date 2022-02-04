@@ -30,12 +30,10 @@ function scanGroups(group){
         if ( found ) {
             groups = found.get("groups");
             current = getGroup(groups, group.getName());
-            if (! current ){
+            if (! current && !isServicePath(group)){
                 var newGroup = new HashMap();
                 newGroup.put("id",group.getId());
                 newGroup.put("name", group.getName());
-                newGroup.put("is_servicepath", isServicePath(group));
-                newGroup.put("parent", group.getParent().getName());
                 var rep = ModelToRepresentation.toRepresentation(group, true);
                 if (rep.getRealmRoles())
                     newGroup.put("realmRoles",rep.getRealmRoles());
