@@ -3,7 +3,7 @@ var HashSet = Java.type('java.util.HashSet');
 var ArrayList = Java.type('java.util.ArrayList');
 var ModelToRepresentation = Java.type('org.keycloak.models.utils.ModelToRepresentation');
 var groups = user.getGroups();
-var tenants = new ArrayList();
+var tenants = new HashMap();
 
 groups.forEach(scanTenant);
 groups.forEach(scanGroups);
@@ -13,11 +13,13 @@ function scanTenant(group){
         found = getTenant(group.getName());
         if ( !found ) {
             var groups = new ArrayList();
-            var tenant = new HashMap();
-            tenant.put("id",group.getId());
-            tenant.put("name",group.getName());
-            tenant.put("groups",groups);
-            tenants.add(tenant);
+            var realmRoles = new ArrayList();
+            var clientRoles = new ArrayList();
+            var tenantConfiguration = new HashMap();
+            tenantConfiguration.put("groups",groups);
+            tenantConfiguration.put("realmRoles",realmRoles);
+            tenantConfiguration.put("clientRoles",clientRoles);
+            tenants.put(group.getName(),tenantConfiguration);
         }
     } else if( group !== null && group.getParent() !== null ) {
         scanTenant(group.getParent());
@@ -29,39 +31,41 @@ function scanGroups(group){
         found = getTenant(getRoot(group).getName());
         if ( found ) {
             groups = found.get("groups");
+            realmRoles = found.get("realmRoles");
+            clientRoles = found.get("clientRoles");
             current = getGroup(groups, group.getName());
-            if (! current && !isServicePath(group)){
-                var newGroup = new HashMap();
-                newGroup.put("id",group.getId());
-                newGroup.put("name", group.getName());
+            if (! current ){
+                //we should put the group to show the hierarchy
+                groups.add(group.getName());
                 var rep = ModelToRepresentation.toRepresentation(group, true);
                 if (rep.getRealmRoles())
-                    newGroup.put("realmRoles",rep.getRealmRoles());
+                    addToArrayList(rep.getRealmRoles(), realmRoles);
                 if( keycloakSession.getContext().getClient()){
                     var clientId = keycloakSession.getContext().getClient().getClientId();
-                    if(rep.getClientRoles().get(clientId)) newGroup.put("clientRoles",rep.getClientRoles().get(clientId));
+                    if(rep.getClientRoles().get(clientId)) addToArrayList(rep.getClientRoles().get(clientId), clientRoles);
                 } else {
                     var clients = realm.getClients();
-                     for (i= 0; i<clients.size(); i++){
+                    for (i= 0; i<clients.size(); i++){
                         item = clients.get(i);
                         var clientId = item.getClientId();
-                        if(rep.getClientRoles().get(clientId)) newGroup.put(clientId,rep.getClientRoles().get(clientId));
+                        if(rep.getClientRoles().get(clientId)) {
+                            foundClient = found.get(clientId);
+                            if (!foundClient) 
+                              found.put(clientId,rep.getClientRoles().get(clientId));
+                        }
                     }
                 }
-                groups.add(newGroup);
             }
         }
-    } 
+    }
     if( group.getParent() !== null ) {
         scanGroups(group.getParent());
     }
 }
 
 function getTenant(name){
-    for (i= 0; i<tenants.size(); i++){
-        item = tenants.get(i);
-        if (item.get("name")===name)
-            return item;
+    if (name in tenants){
+            return tenants[name];
     }
     return null;
 }
@@ -69,7 +73,7 @@ function getTenant(name){
 function getGroup(groups, name){
     for (i= 0; i<groups.size(); i++){
         item = groups.get(i);
-        if (item.get("name")===name)
+        if (item===name)
             return item;
     }
     return null;
@@ -81,19 +85,21 @@ function getRoot(group){
     return group;
 }
 
-
-function isServicePath(group){
-    if (group.getFirstAttribute("servicePath") == "true" || group.getFirstAttribute("servicepath") == "true")  
-        return true;
-    return false;
-}
-
 function isTenant(group){
     if (group.getParent()===null && 
         group.getFirstAttribute("tenant") == "true"){
         return true;
     }
     return false;
+}
+
+function addToArrayList(source, destination){
+    for (i = 0; i < source.size(); i++){
+      if (!destination.contains(source.get(i))) {
+        destination.add(source.get(i));
+      }
+    }
+    return destination;
 }
 
 token.setOtherClaims("tenants", tenants);
