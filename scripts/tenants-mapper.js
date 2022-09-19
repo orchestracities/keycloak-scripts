@@ -32,6 +32,7 @@ function scanGroups(group){
         if ( found ) {
             groups = found.get("groups");
             realmRoles = found.get("realmRoles");
+            //should include the client!
             clientRoles = found.get("clientRoles");
             current = getGroup(groups, group.getName());
             if (! current ){

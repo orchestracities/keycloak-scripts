@@ -18,9 +18,9 @@
             "description": "Sets client_check custom claim to current client ID"
         },
         {
-          "name": "Orchestra Cities super-admin roles mapper",
-          "fileName": "admin-roles-mapper.js",
-          "description": "Sets admin-roles custom claim with admin roles"
+          "name": "Orchestra Cities super-admin mapper",
+          "fileName": "is-superdamin-mapper.js",
+          "description": "Check if a user has superadmin role"
         }
     ]
 }
