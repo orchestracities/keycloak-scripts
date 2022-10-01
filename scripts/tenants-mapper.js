@@ -1,3 +1,19 @@
+/**
+ * return a JSON claim structured as:
+ * "tenants": {
+ *   "Tenant2": {
+ *      "roles": [
+ *        "tenant-admin",
+ *        "client2:roleA"
+ *      ],
+ *      "groups": [
+ *        "Admin2",
+ *        "Group2"
+ *      ]
+ *    }
+ *  },
+ */
+
 var HashMap = Java.type('java.util.HashMap');
 var HashSet = Java.type('java.util.HashSet');
 var ArrayList = Java.type('java.util.ArrayList');
@@ -13,12 +29,10 @@ function scanTenant(group){
         found = getTenant(group.getName());
         if ( !found ) {
             var groups = new ArrayList();
-            var realmRoles = new ArrayList();
-            var clientRoles = new ArrayList();
+            var roles = new ArrayList();
             var tenantConfiguration = new HashMap();
             tenantConfiguration.put("groups",groups);
-            tenantConfiguration.put("realmRoles",realmRoles);
-            tenantConfiguration.put("clientRoles",clientRoles);
+            tenantConfiguration.put("roles",roles);
             tenants.put(group.getName(),tenantConfiguration);
         }
     } else if( group !== null && group.getParent() !== null ) {
@@ -31,29 +45,23 @@ function scanGroups(group){
         found = getTenant(getRoot(group).getName());
         if ( found ) {
             groups = found.get("groups");
-            realmRoles = found.get("realmRoles");
-            //should include the client!
-            clientRoles = found.get("clientRoles");
+            roles = found.get("roles");
             current = getGroup(groups, group.getName());
             if (! current ){
                 //we should put the group to show the hierarchy
                 groups.add(group.getName());
                 var rep = ModelToRepresentation.toRepresentation(group, true);
                 if (rep.getRealmRoles())
-                    addToArrayList(rep.getRealmRoles(), realmRoles);
+                    addToArrayList(rep.getRealmRoles(), roles, "");
                 if( keycloakSession.getContext().getClient()){
                     var clientId = keycloakSession.getContext().getClient().getClientId();
-                    if(rep.getClientRoles().get(clientId)) addToArrayList(rep.getClientRoles().get(clientId), clientRoles);
+                    if(rep.getClientRoles().get(clientId)) addToArrayList(rep.getClientRoles().get(clientId), roles, clientId);
                 } else {
                     var clients = realm.getClients();
                     for (i= 0; i<clients.size(); i++){
                         item = clients.get(i);
                         var clientId = item.getClientId();
-                        if(rep.getClientRoles().get(clientId)) {
-                            foundClient = found.get(clientId);
-                            if (!foundClient) 
-                              found.put(clientId,rep.getClientRoles().get(clientId));
-                        }
+                        if(rep.getClientRoles().get(clientId)) addToArrayList(rep.getClientRoles().get(clientId), roles, clientId);
                     }
                 }
             }
@@ -94,9 +102,11 @@ function isTenant(group){
     return false;
 }
 
-function addToArrayList(source, destination){
+function addToArrayList(source, destination, clientid){
     for (i = 0; i < source.size(); i++){
-      if (!destination.contains(source.get(i))) {
+      if (clientid != "" &&  !destination.contains(clientid + ":" + source.get(i))) {
+        destination.add(clientid + ":" + source.get(i));
+      } else if (clientid == "" &&  !destination.contains(source.get(i))) {
         destination.add(source.get(i));
       }
     }
