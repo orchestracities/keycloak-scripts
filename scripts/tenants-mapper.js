@@ -1,14 +1,16 @@
 /**
  * return a JSON claim structured as:
- * "tenants": {
- *   "Tenant2": {
+ *  "tenants": {
+ *    "Tenant2": {
  *      "roles": [
  *        "tenant-admin",
- *        "client2:roleA"
+ *        "client1:role1",
+ *        "client1:role2"
  *      ],
  *      "groups": [
- *        "Admin2",
- *        "Group2"
+ *        "/Admin2",
+ *        "/Group2",
+ *        "/Group1/SubGroup1",
  *      ]
  *    }
  *  },
@@ -44,13 +46,13 @@ function scanGroups(group){
     if ( isTenant(group)===false )  {
         found = getTenant(getRoot(group).getName());
         if ( found ) {
-            groups = found.get("groups");
-            roles = found.get("roles");
-            current = getGroup(groups, group.getName());
+            groups = found[1].get("groups");
+            roles = found[1].get("roles");
+            var rep = ModelToRepresentation.toRepresentation(group, true);
+            var cleanPath = rep.getPath().substring(found[0].length + 1);
+            current = getGroup(groups, cleanPath);
             if (! current ){
-                //we should put the group to show the hierarchy
-                groups.add(group.getName());
-                var rep = ModelToRepresentation.toRepresentation(group, true);
+                groups.add(cleanPath);
                 if (rep.getRealmRoles())
                     addToArrayList(rep.getRealmRoles(), roles, "");
                 if( keycloakSession.getContext().getClient()){
@@ -74,7 +76,7 @@ function scanGroups(group){
 
 function getTenant(name){
     if (name in tenants){
-            return tenants[name];
+        return [name, tenants[name]];
     }
     return null;
 }
