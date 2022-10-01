@@ -1,16 +1,12 @@
-var client = keycloakSession.getContext().getClient();
-var forEach = Array.prototype.forEach;
+/**
+ * return a boolean claim structured as:
+ *  "is_super_admin": false
+ */
 
-var isAdmin = false;
+isSuperAdmin = false;
 
-forEach.call(user.getRealmRoleMappings().toArray(), function (roleModel) {
- if (roleModel.getName().contains("admin")) {
-    isAdmin = true;
-  }
-});
-
-if (isAdmin) {
-  token.getOtherClaims().put("superadmin", "true");
-} else {
-  token.getOtherClaims().put("superadmin", "false");
+if(user.hasRole(realm.getRole("admin"))){
+  isSuperAdmin = true;
 }
+
+token.setOtherClaims("is_super_admin", isSuperAdmin);
