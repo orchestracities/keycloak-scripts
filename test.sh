@@ -98,6 +98,24 @@ json=$( curl -sS --location --request POST 'http://localhost:8080/realms/test/pr
 
 jq -R 'split(".") | .[1] | @base64d | fromjson' <<< $( jq -r ".access_token" <<<"$json" )
 
-echo 'stopping keycloak'
 
+echo 'list groups as admin with client1'
+
+json=$( curl -sS --location --request POST 'http://localhost:8080/realms/test/protocol/openid-connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'username=admin' \
+--data-urlencode 'password=admin' \
+--data-urlencode 'grant_type=password' \
+--data-urlencode 'client_id=client1' )
+
+token=$( jq -r ".access_token" <<<"$json" )
+
+curl 'http://localhost:8080/admin/realms/test/groups?briefRepresentation=false' \
+  -H 'Accept: application/json, text/plain, */*' \
+  -H 'Authorization: bearer ${token}' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Connection: keep-alive' \
+  --compressed
+
+echo 'stopping keycloak'
 #docker rm kc -f

@@ -35,6 +35,7 @@ function scanTenant(group){
             var tenantConfiguration = new HashMap();
             tenantConfiguration.put("groups",groups);
             tenantConfiguration.put("roles",roles);
+            tenantConfiguration.put("id", group.getId();)
             tenants.put(group.getName(),tenantConfiguration);
         }
     } else if( group !== null && group.getParent() !== null ) {
