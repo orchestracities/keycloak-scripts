@@ -14,6 +14,8 @@
  *      ]
  *    }
  *  },
+ * TODO: enable filter tenant using scope tenant:tenantId
+ * TODO: enable return only tenant lists using scope only-tenants
  */
 
 var HashMap = Java.type('java.util.HashMap');
@@ -35,7 +37,7 @@ function scanTenant(group){
             var tenantConfiguration = new HashMap();
             tenantConfiguration.put("groups",groups);
             tenantConfiguration.put("roles",roles);
-            tenantConfiguration.put("id", group.getId();)
+            tenantConfiguration.put("id", group.getId());
             tenants.put(group.getName(),tenantConfiguration);
         }
     } else if( group !== null && group.getParent() !== null ) {
