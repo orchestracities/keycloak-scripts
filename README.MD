@@ -8,24 +8,27 @@ to support multi-tenancy and service Paths:
 
   ```json
   "tenants": {
-    "Tenant1": {
-      "roles": [
-        "tenant-admin"
-      ],
-      "groups": [
-        "/Admin",
-        "/Group1"
-      ]
-    },
     "Tenant2": {
       "roles": [
-        "client2:roleA"
+        "tenant-admin",
+        "ngsi:entity:op",
+        "ngsi:subscription:read",
+        "ngsi:registration:write",
+        "ngsi:entity:read",
+        "ngsi:registration:delete",
+        "ngsi:subscription:write",
+        "ngsi:registration:read",
+        "ngsi:subscription:delete",
+        "ngsi:entity:write",
+        "ngsi:entity:delete"
       ],
       "groups": [
+        "/Admin2",
         "/Group2"
-      ]
+      ],
+      "id": "a6662e3f-0328-43d1-b5cf-25f3209c57e8"
     }
-  },
+  }
   ```
 
 * [Orchestra Cities super-admin mapper](scripts/is-superdamin-mapper.js): create a claim reporting if a user is a super user, e.g.:

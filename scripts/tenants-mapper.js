@@ -4,14 +4,22 @@
  *    "Tenant2": {
  *      "roles": [
  *        "tenant-admin",
- *        "client1:role1",
- *        "client1:role2"
+ *        "ngsi:entity:op",
+ *        "ngsi:subscription:read",
+ *        "ngsi:registration:write",
+ *        "ngsi:entity:read",
+ *        "ngsi:registration:delete",
+ *        "ngsi:subscription:write",
+ *        "ngsi:registration:read",
+ *        "ngsi:subscription:delete",
+ *        "ngsi:entity:write",
+ *        "ngsi:entity:delete"
  *      ],
  *      "groups": [
  *        "/Admin2",
- *        "/Group2",
- *        "/Group1/SubGroup1",
- *      ]
+ *        "/Group2"
+ *      ],
+ *      "id": "a6662e3f-0328-43d1-b5cf-25f3209c57e8"
  *    }
  *  },
  * TODO: enable filter tenant using scope tenant:tenantId

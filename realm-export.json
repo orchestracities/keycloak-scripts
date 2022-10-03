@@ -1,8 +1,8 @@
 {
-  "id" : "test",
-  "realm" : "test",
-  "displayName" : "Test",
-  "displayNameHtml" : "<div class=\"kc-logo-text\"><span>Test</span></div>",
+  "id" : "default",
+  "realm" : "default",
+  "displayName" : "default oc realm",
+  "displayNameHtml" : "<div class=\"kc-logo-text\"><span>default</span></div>",
   "notBefore" : 0,
   "defaultSignatureAlgorithm" : "RS256",
   "revokeRefreshToken" : false,
@@ -52,7 +52,7 @@
       "description" : "${role_offline-access}",
       "composite" : false,
       "clientRole" : false,
-      "containerId" : "test",
+      "containerId" : "default",
       "attributes" : { }
     }, {
       "id" : "c25b3746-3665-4a1c-a026-80b9e6eee0a6",
@@ -62,11 +62,11 @@
       "composites" : {
         "realm" : [ "create-realm" ],
         "client" : {
-          "master-realm" : [ "manage-authorization", "query-users", "impersonation", "view-events", "view-authorization", "view-clients", "manage-clients", "view-realm", "manage-realm", "view-identity-providers", "manage-identity-providers", "query-realms", "query-groups", "manage-users", "manage-events", "create-client", "view-users", "query-clients" ]
+          "default-realm" : [ "manage-authorization", "query-users", "impersonation", "view-events", "view-authorization", "view-clients", "manage-clients", "view-realm", "manage-realm", "view-identity-providers", "manage-identity-providers", "query-realms", "query-groups", "manage-users", "manage-events", "create-client", "view-users", "query-clients" ]
         }
       },
       "clientRole" : false,
-      "containerId" : "test",
+      "containerId" : "default",
       "attributes" : { }
     }, {
       "id" : "3788001c-cf54-40c6-a343-0f4c534b8a45",
@@ -80,14 +80,14 @@
         }
       },
       "clientRole" : false,
-      "containerId" : "test",
+      "containerId" : "default",
       "attributes" : { }
     }, {
       "id" : "770adb7d-a9ef-4c54-ab00-032465327607",
       "name" : "developer",
       "composite" : false,
       "clientRole" : false,
-      "containerId" : "test",
+      "containerId" : "default",
       "attributes" : { }
     }, {
       "id" : "e4f679b0-5278-46b2-bd5c-3a760cbf01df",
@@ -95,7 +95,7 @@
       "description" : "${role_uma_authorization}",
       "composite" : false,
       "clientRole" : false,
-      "containerId" : "test",
+      "containerId" : "default",
       "attributes" : { }
     }, {
       "id" : "6786b5c5-fca0-43c3-a5e3-3f68d2995473",
@@ -108,7 +108,7 @@
         }
       },
       "clientRole" : false,
-      "containerId" : "test",
+      "containerId" : "default",
       "attributes" : { }
     }, {
       "id" : "e00cdb76-7def-49c6-8656-b70fe338c4fa",
@@ -116,11 +116,11 @@
       "description" : "${role_create-realm}",
       "composite" : false,
       "clientRole" : false,
-      "containerId" : "test",
+      "containerId" : "default",
       "attributes" : { }
     }, {
       "id" : "077b2cc0-f7d8-4853-865f-db3612a58fd7",
-      "name" : "default-roles-master",
+      "name" : "default-roles-default",
       "description" : "${role_default-roles}",
       "composite" : true,
       "composites" : {
@@ -130,7 +130,7 @@
         }
       },
       "clientRole" : false,
-      "containerId" : "test",
+      "containerId" : "default",
       "attributes" : { }
     } ],
     "client" : {
@@ -321,7 +321,7 @@
         "containerId" : "206ca942-0e95-4fde-a300-c61ca811f94b",
         "attributes" : { }
       } ],
-      "master-realm" : [ {
+      "default-realm" : [ {
         "id" : "603bcad8-2fac-4b97-be55-3879ee21116d",
         "name" : "manage-authorization",
         "description" : "${role_manage-authorization}",
@@ -368,7 +368,7 @@
         "composite" : true,
         "composites" : {
           "client" : {
-            "master-realm" : [ "query-clients" ]
+            "default-realm" : [ "query-clients" ]
           }
         },
         "clientRole" : true,
@@ -461,7 +461,7 @@
         "composite" : true,
         "composites" : {
           "client" : {
-            "master-realm" : [ "query-users", "query-groups" ]
+            "default-realm" : [ "query-users", "query-groups" ]
           }
         },
         "clientRole" : true,
@@ -477,7 +477,15 @@
         "attributes" : { }
       } ],
       "psql-operator" : [ ],
-      "api-management" : [ ],
+      "api-management" : [ {
+        "id" : "e61148c3-14c0-491c-8270-dfa93f782502",
+        "name" : "gravitee-admin",
+        "description" : "",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "4ae36fd9-8a12-4c41-80e7-36114626e2e4",
+        "attributes" : { }
+      } ],
       "grafana" : [ {
         "id" : "5c4ef738-979e-418e-8967-97d983224d3f",
         "name" : "Viewer",
@@ -817,11 +825,11 @@
   } ],
   "defaultRole" : {
     "id" : "077b2cc0-f7d8-4853-865f-db3612a58fd7",
-    "name" : "default-roles-master",
+    "name" : "default-roles-default",
     "description" : "${role_default-roles}",
     "composite" : true,
     "clientRole" : false,
-    "containerId" : "test"
+    "containerId" : "default"
   },
   "requiredCredentials" : [ "password" ],
   "otpPolicyType" : "totp",
@@ -868,7 +876,7 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "admin", "default-roles-master" ],
+    "realmRoles" : [ "admin", "default-roles-default" ],
     "clientRoles" : {
       "realm-management" : [ "view-users", "query-users", "view-clients", "query-groups" ]
     },
@@ -884,7 +892,7 @@
     "credentials" : [ ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "default-roles-master" ],
+    "realmRoles" : [ "default-roles-default" ],
     "notBefore" : 0,
     "groups" : [ ]
   }, {
@@ -898,7 +906,7 @@
     "credentials" : [ ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "default-roles-master" ],
+    "realmRoles" : [ "default-roles-default" ],
     "clientRoles" : {
       "realm-management" : [ "uma_protection" ]
     },
@@ -920,7 +928,7 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "default-roles-master" ],
+    "realmRoles" : [ "default-roles-default" ],
     "notBefore" : 0,
     "groups" : [ "/Tenant1/Admin", "/Tenant1/Group2", "/Tenant1/Group1/SubGroup1" ]
   }, {
@@ -939,7 +947,7 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "default-roles-master" ],
+    "realmRoles" : [ "default-roles-default" ],
     "notBefore" : 0,
     "groups" : [ "/Tenant2/Admin2", "/Tenant2/Group2" ]
   } ],
@@ -958,12 +966,12 @@
     "clientId" : "account",
     "name" : "${client_account}",
     "rootUrl" : "${authBaseUrl}",
-    "baseUrl" : "/realms/test/account/",
+    "baseUrl" : "/realms/default/account/",
     "surrogateAuthRequired" : false,
     "enabled" : true,
     "alwaysDisplayInConsole" : false,
     "clientAuthenticatorType" : "client-secret",
-    "redirectUris" : [ "/realms/test/account/*" ],
+    "redirectUris" : [ "/realms/default/account/*" ],
     "webOrigins" : [ ],
     "notBefore" : 0,
     "bearerOnly" : false,
@@ -988,12 +996,12 @@
     "clientId" : "account-console",
     "name" : "${client_account-console}",
     "rootUrl" : "${authBaseUrl}",
-    "baseUrl" : "/realms/test/account/",
+    "baseUrl" : "/realms/default/account/",
     "surrogateAuthRequired" : false,
     "enabled" : true,
     "alwaysDisplayInConsole" : false,
     "clientAuthenticatorType" : "client-secret",
-    "redirectUris" : [ "/realms/test/account/*" ],
+    "redirectUris" : [ "/realms/default/account/*" ],
     "webOrigins" : [ ],
     "notBefore" : 0,
     "bearerOnly" : false,
@@ -1234,8 +1242,8 @@
     "authenticationFlowBindingOverrides" : { },
     "fullScopeAllowed" : true,
     "nodeReRegistrationTimeout" : -1,
-    "defaultClientScopes" : [ "web-origins", "acr", "roles", "profile", "fiware", "email" ],
-    "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt" ]
+    "defaultClientScopes" : [ "web-origins", "acr", "roles", "profile", "email" ],
+    "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt", "fiware" ]
   }, {
     "id" : "998455fd-a08e-4920-94e2-8d63ffbfdd88",
     "clientId" : "iot-agent",
@@ -1333,12 +1341,12 @@
     },
     "fullScopeAllowed" : true,
     "nodeReRegistrationTimeout" : -1,
-    "defaultClientScopes" : [ "web-origins", "acr", "roles", "profile", "fiware", "email" ],
-    "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt" ]
+    "defaultClientScopes" : [ "web-origins", "acr", "roles", "profile", "email" ],
+    "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt", "fiware" ]
   }, {
     "id" : "540bcbc4-2bbf-4808-983a-fc23e0f62ad5",
-    "clientId" : "master-realm",
-    "name" : "master Realm",
+    "clientId" : "default-realm",
+    "name" : "default Realm",
     "surrogateAuthRequired" : false,
     "enabled" : true,
     "alwaysDisplayInConsole" : false,
@@ -1479,8 +1487,8 @@
     },
     "fullScopeAllowed" : true,
     "nodeReRegistrationTimeout" : -1,
-    "defaultClientScopes" : [ "web-origins", "acr", "roles", "profile", "fiware", "email" ],
-    "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt" ]
+    "defaultClientScopes" : [ "web-origins", "acr", "roles", "profile", "email" ],
+    "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt", "fiware" ]
   }, {
     "id" : "612f607c-251f-4304-942e-c1f2e0226385",
     "clientId" : "prometheus",
@@ -1517,8 +1525,8 @@
     "authenticationFlowBindingOverrides" : { },
     "fullScopeAllowed" : true,
     "nodeReRegistrationTimeout" : -1,
-    "defaultClientScopes" : [ "web-origins", "acr", "roles", "profile", "fiware", "email" ],
-    "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt" ]
+    "defaultClientScopes" : [ "web-origins", "acr", "roles", "profile", "email" ],
+    "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt", "fiware" ]
   }, {
     "id" : "aaccf7bf-c7f5-4c8b-b4e3-c65ea5d0f81e",
     "clientId" : "psql-operator",
@@ -1563,8 +1571,8 @@
     },
     "fullScopeAllowed" : true,
     "nodeReRegistrationTimeout" : -1,
-    "defaultClientScopes" : [ "web-origins", "acr", "roles", "profile", "fiware", "email" ],
-    "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt" ]
+    "defaultClientScopes" : [ "web-origins", "acr", "roles", "profile", "email" ],
+    "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt", "fiware" ]
   }, {
     "id" : "6ddb0f29-7bae-472a-a07f-6ef2b75743d4",
     "clientId" : "realm-management",
@@ -1652,12 +1660,12 @@
     "clientId" : "security-admin-console",
     "name" : "${client_security-admin-console}",
     "rootUrl" : "${authAdminUrl}",
-    "baseUrl" : "/admin/test/console/",
+    "baseUrl" : "/admin/default/console/",
     "surrogateAuthRequired" : false,
     "enabled" : true,
     "alwaysDisplayInConsole" : false,
     "clientAuthenticatorType" : "client-secret",
-    "redirectUris" : [ "/admin/test/console/*" ],
+    "redirectUris" : [ "/admin/default/console/*" ],
     "webOrigins" : [ "+" ],
     "notBefore" : 0,
     "bearerOnly" : false,
