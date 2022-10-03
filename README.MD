@@ -3,63 +3,44 @@
 This repo includes JavaScript Providers used by OrchestraCities
 to support multi-tenancy and service Paths:
  
-* [Admin only authenticator](scripts/admin-only-authenticator.js): check if user has role admin to allow access.
+* [Admin only authenticator](scripts/admin-only-authenticator.js): check if user has role `admin` to allow access.
 * [Orchestra Cities tenants-roles mapper](scripts/tenants-mapper.js): maps user to tenants and roles within tenants. e.g.:
 
   ```json
-  "tenants": [
-    {
-      "name": "Tenant1",
-      "groups": [
-        {
-          "realmRoles": [],
-          "name": "Group1",
-          "id": "57369209-ae5c-49c1-bac7-82c16c3029bf",
-          "clientRoles": [
-            "role1"
-          ]
-        }
+  "tenants": {
+    "Tenant2": {
+      "roles": [
+        "tenant-admin",
+        "ngsi:entity:op",
+        "ngsi:subscription:read",
+        "ngsi:registration:write",
+        "ngsi:entity:read",
+        "ngsi:registration:delete",
+        "ngsi:subscription:write",
+        "ngsi:registration:read",
+        "ngsi:subscription:delete",
+        "ngsi:entity:write",
+        "ngsi:entity:delete"
       ],
-      "id": "b691f15d-d475-4c9d-97f7-ee8ec18ae262"
-    },
-    {
-      "name": "Tenant2",
       "groups": [
-        {
-          "realmRoles": [],
-          "name": "Group2",
-          "id": "9b2c2c3e-e3cd-4758-9e14-b005feef06f1",
-          "clientRoles": [
-            "role2"
-          ]
-        }
+        "/Admin2",
+        "/Group2"
       ],
       "id": "a6662e3f-0328-43d1-b5cf-25f3209c57e8"
     }
-  ],
+  }
   ```
 
-* [Orchestra Cities tenants-name mapper](scripts/tenants-name-mapper.js): maps user to tenants' name. e.g.:
+* [Orchestra Cities super-admin mapper](scripts/is-superdamin-mapper.js): create a claim reporting if a user is a super user, e.g.:
 
   ```json
-  "tenants": [
-    "Tenant1",
-    "Tenant2"
-  ],
+  "is_super_admin": true,
   ```
 
-* [Orchestra Cities fiware services mapper](scripts/services-mapper.js): list services path accessible to users. e.g.:
+Deprecated:
 
-  ```json
-  "fiware-services": {
-    "Tenant1": [
-      "/ServicePath1"
-    ],
-    "Tenant2": [
-      "/ServicePath2"
-    ]
-  },
-  ```
+* [Orchestra Cities tenants-name mapper](scripts/tenants-name-mapper.js). See old version.
+* [Orchestra Cities fiware services mapper](scripts/services-mapper.js). See old version.
 
 # Building the package
 
@@ -97,15 +78,6 @@ To load test the scripts in keycloak:
 
 ```sh
 sh test.sh
-```
-
-**NOTE**: if you are using a m1 mac or any other arm64 based computer, you need
-to custom build your docker image. E.g.:
-
-```sh
-git clone https://github.com/keycloak/keycloak-containers.git
-cd keycloak-containers/server
-docker build . -t jboss/keycloak
 ```
 
 ## Updating realm export

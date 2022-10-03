@@ -25,7 +25,7 @@ AuthenticationFlowError = Java.type("org.keycloak.authentication.AuthenticationF
  */
 function authenticate(context) {
 
-    if(user.hasRole(realm.getRole("data-admin"))){
+    if(user.hasRole(realm.getRole("admin"))){
         context.success(); 
         return; 
     }

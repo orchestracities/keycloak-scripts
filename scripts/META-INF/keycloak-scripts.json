@@ -13,19 +13,14 @@
             "description": "Maps top users groups to tenants"
         },
         {
-            "name": "Orchestra Cities tenants-name mapper",
-            "fileName": "tenants-name-mapper.js",
-            "description": "Maps top users groups to tenants"
-        },
-        {
-            "name": "Orchestra Cities fiware services mapper",
-            "fileName": "services-mapper.js",
-            "description": "List services path accessible to users"
-        },
-        {
             "name": "Orchestra Cities client ID mapper",
             "fileName": "client-id-mapper.js",
             "description": "Sets client_check custom claim to current client ID"
+        },
+        {
+          "name": "Orchestra Cities super-admin mapper",
+          "fileName": "is-superdamin-mapper.js",
+          "description": "Check if a user has superadmin role"
         }
     ]
 }
