@@ -737,6 +737,7 @@
       "attributes" : { },
       "realmRoles" : [ "tenant-admin" ],
       "clientRoles" : {
+        "api-management" : [ "gravitee-admin" ],
         "grafana" : [ "Admin" ],
         "ngsi" : [ "entity:op", "subscription:read", "registration:write", "entity:read", "registration:delete", "subscription:write" ],
         "iot-agent" : [ "devicegroup:write", "device:read", "devicegroup:read", "devicegroup:delete", "device:delete", "device:write" ]
@@ -783,7 +784,9 @@
       "tenant" : [ "true" ]
     },
     "realmRoles" : [ "tenant-admin" ],
-    "clientRoles" : { },
+    "clientRoles" : {
+      "api-management" : [ "gravitee-admin" ]
+    },
     "subGroups" : [ {
       "id" : "0eb33525-8b27-4732-beef-9f0c82559247",
       "name" : "Admin2",
@@ -1095,8 +1098,23 @@
     "authenticationFlowBindingOverrides" : { },
     "fullScopeAllowed" : true,
     "nodeReRegistrationTimeout" : -1,
-    "defaultClientScopes" : [ "web-origins", "acr", "roles", "profile", "fiware", "email" ],
-    "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt" ]
+    "protocolMappers" : [ {
+      "id" : "b3f80e33-256d-4d88-a57e-9bb3e362906e",
+      "name" : "client_roles",
+      "protocol" : "openid-connect",
+      "protocolMapper" : "oidc-usermodel-client-role-mapper",
+      "consentRequired" : false,
+      "config" : {
+        "multivalued" : "true",
+        "userinfo.token.claim" : "false",
+        "id.token.claim" : "false",
+        "access.token.claim" : "true",
+        "claim.name" : "roles",
+        "usermodel.clientRoleMapping.clientId" : "api-management"
+      }
+    } ],
+    "defaultClientScopes" : [ "web-origins", "acr", "profile", "fiware", "email" ],
+    "optionalClientScopes" : [ "address", "phone", "roles", "offline_access", "microprofile-jwt" ]
   }, {
     "id" : "206ca942-0e95-4fde-a300-c61ca811f94b",
     "clientId" : "broker",
@@ -1191,6 +1209,21 @@
         "jsonType.label" : "String"
       }
     }, {
+      "id" : "32da42d5-bb47-47a8-adcc-b4619fe4cb18",
+      "name" : "client roles",
+      "protocol" : "openid-connect",
+      "protocolMapper" : "oidc-usermodel-client-role-mapper",
+      "consentRequired" : false,
+      "config" : {
+        "multivalued" : "true",
+        "userinfo.token.claim" : "true",
+        "id.token.claim" : "true",
+        "access.token.claim" : "true",
+        "claim.name" : "resource_access.${client_id}.roles",
+        "jsonType.label" : "String",
+        "usermodel.clientRoleMapping.clientId" : "realm-management"
+      }
+    }, {
       "id" : "f2577d16-58f6-414a-9304-e43ff8455397",
       "name" : "Client ID",
       "protocol" : "openid-connect",
@@ -1205,8 +1238,8 @@
         "jsonType.label" : "String"
       }
     } ],
-    "defaultClientScopes" : [ "web-origins", "acr", "roles", "profile", "fiware", "email" ],
-    "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt" ]
+    "defaultClientScopes" : [ "web-origins", "acr", "profile", "fiware", "email" ],
+    "optionalClientScopes" : [ "address", "phone", "roles", "offline_access", "microprofile-jwt" ]
   }, {
     "id" : "540bcbc4-2bbf-4808-983a-fc23e0f62ad5",
     "clientId" : "default-realm",
@@ -1272,8 +1305,24 @@
     "authenticationFlowBindingOverrides" : { },
     "fullScopeAllowed" : true,
     "nodeReRegistrationTimeout" : -1,
-    "defaultClientScopes" : [ "web-origins", "acr", "roles", "profile", "email" ],
-    "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt", "fiware" ]
+    "protocolMappers" : [ {
+      "id" : "1adab91d-5453-4e5f-81a7-fc58be22cfe4",
+      "name" : "client roles",
+      "protocol" : "openid-connect",
+      "protocolMapper" : "oidc-usermodel-client-role-mapper",
+      "consentRequired" : false,
+      "config" : {
+        "multivalued" : "true",
+        "userinfo.token.claim" : "false",
+        "id.token.claim" : "false",
+        "access.token.claim" : "true",
+        "claim.name" : "roles",
+        "jsonType.label" : "String",
+        "usermodel.clientRoleMapping.clientId" : "grafana"
+      }
+    } ],
+    "defaultClientScopes" : [ "web-origins", "acr", "profile", "email" ],
+    "optionalClientScopes" : [ "address", "phone", "roles", "offline_access", "microprofile-jwt", "fiware" ]
   }, {
     "id" : "998455fd-a08e-4920-94e2-8d63ffbfdd88",
     "clientId" : "iot-agent",

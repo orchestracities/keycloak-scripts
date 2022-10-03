@@ -81,5 +81,44 @@ json=$( curl -sS --location --request POST 'http://localhost:8080/realms/default
 
 jq -R 'split(".") | .[1] | @base64d | fromjson' <<< $( jq -r ".access_token" <<<"$json" )
 
-echo 'stopping keycloak'
-#docker rm kc -f
+#decode admin1 jwt token for api-management
+
+echo 'decode admin jwt token for api-management'
+
+json=$( curl -sS --location --request POST 'http://localhost:8080/realms/default/protocol/openid-connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'username=admin' \
+--data-urlencode 'password=admin' \
+--data-urlencode 'grant_type=password' \
+--data-urlencode 'client_id=api-management' \
+--data-urlencode 'client_secret=qmIkEDd8XJjTHzDytQiTPgF1cBqmpAfg' )
+
+jq -R 'split(".") | .[1] | @base64d | fromjson' <<< $( jq -r ".access_token" <<<"$json" )
+
+#decode user1 jwt token for api-management
+
+echo 'decode user1 jwt token for api-management'
+
+json=$( curl -sS --location --request POST 'http://localhost:8080/realms/default/protocol/openid-connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'username=user1' \
+--data-urlencode 'password=user1' \
+--data-urlencode 'grant_type=password' \
+--data-urlencode 'client_id=api-management' \
+--data-urlencode 'client_secret=qmIkEDd8XJjTHzDytQiTPgF1cBqmpAfg' )
+
+jq -R 'split(".") | .[1] | @base64d | fromjson' <<< $( jq -r ".access_token" <<<"$json" )
+
+#decode user2 jwt token for api-management
+
+echo 'decode user2 jwt token for api-management'
+
+json=$( curl -sS --location --request POST 'http://localhost:8080/realms/default/protocol/openid-connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'username=user2' \
+--data-urlencode 'password=user2' \
+--data-urlencode 'grant_type=password' \
+--data-urlencode 'client_id=api-management' \
+--data-urlencode 'client_secret=qmIkEDd8XJjTHzDytQiTPgF1cBqmpAfg' )
+
+jq -R 'split(".") | .[1] | @base64d | fromjson' <<< $( jq -r ".access_token" <<<"$json" )
