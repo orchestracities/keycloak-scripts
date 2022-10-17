@@ -24,6 +24,7 @@
  *  },
  * TODO: enable filter tenant using scope tenant:tenantId
  * TODO: enable return only tenant lists using scope only-tenants
+ * TODO: return derived roles
  */
 
 var HashMap = Java.type('java.util.HashMap');
@@ -66,16 +67,16 @@ function scanGroups(group){
                 groups.add(cleanPath);
                 if (rep.getRealmRoles())
                     addToArrayList(rep.getRealmRoles(), roles, "");
-                if( keycloakSession.getContext().getClient()){
-                    var clientId = keycloakSession.getContext().getClient().getClientId();
-                    if(rep.getClientRoles().get(clientId)) addToArrayList(rep.getClientRoles().get(clientId), roles, clientId);
-                } else {
-                    var clients = realm.getClients();
-                    for (i= 0; i<clients.size(); i++){
-                        item = clients.get(i);
-                        var clientId = item.getClientId();
-                        if(rep.getClientRoles().get(clientId)) addToArrayList(rep.getClientRoles().get(clientId), roles, clientId);
-                    }
+                // if( keycloakSession.getContext().getClient()){
+                //     var clientId = keycloakSession.getContext().getClient().getClientId();
+                //     if(rep.getClientRoles().get(clientId)) addToArrayList(rep.getClientRoles().get(clientId), roles, clientId);
+                // } else {
+                var clients = realm.getClients();
+                for (i= 0; i<clients.size(); i++){
+                    item = clients.get(i);
+                    var clientId = item.getClientId();
+                    var clientRoles = rep.getClientRoles().get(clientId);
+                    if(clientRoles !=  null) addToArrayList(clientRoles, roles, clientId);
                 }
             }
         }
@@ -116,14 +117,13 @@ function isTenant(group){
 }
 
 function addToArrayList(source, destination, clientid){
-    for (i = 0; i < source.size(); i++){
+    for (var i = 0; i < source.size(); i++){
       if (clientid != "" &&  !destination.contains(clientid + ":" + source.get(i))) {
         destination.add(clientid + ":" + source.get(i));
       } else if (clientid == "" &&  !destination.contains(source.get(i))) {
         destination.add(source.get(i));
       }
     }
-    return destination;
 }
 
 token.setOtherClaims("tenants", tenants);
