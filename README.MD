@@ -3,7 +3,6 @@
 This repo includes JavaScript Providers used by OrchestraCities
 to support multi-tenancy and service Paths:
  
-* [Admin only authenticator](scripts/admin-only-authenticator.js): check if user has role `admin` to allow access.
 * [Orchestra Cities tenants-roles mapper](scripts/tenants-mapper.js): maps user to tenants and roles within tenants. e.g.:
 
   ```json
@@ -41,6 +40,8 @@ Deprecated:
 
 * [Orchestra Cities tenants-name mapper](scripts/tenants-name-mapper.js). See old version.
 * [Orchestra Cities fiware services mapper](scripts/services-mapper.js). See old version.
+* [Admin only authenticator](scripts/admin-only-authenticator.js). See old version.
+  This not more needed since oauth-proxy allows to validate roles and groups.
 
 # Building the package
 

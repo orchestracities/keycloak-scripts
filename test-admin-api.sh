@@ -3,7 +3,7 @@ echo 'list groups as admin with configuration'
 
 json=$( curl -sS --location --request POST 'http://localhost:8080/realms/default/protocol/openid-connect/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
---data-urlencode 'username=admin' \
+--data-urlencode 'username=admin@mail.com' \
 --data-urlencode 'password=admin' \
 --data-urlencode 'grant_type=password' \
 --data-urlencode 'client_id=configuration'
@@ -24,7 +24,7 @@ echo 'list groups as user1 with configuration'
 
 json=$( curl -sS --location --request POST 'http://localhost:8080/realms/default/protocol/openid-connect/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
---data-urlencode 'username=user1' \
+--data-urlencode 'username=user1@mail.com' \
 --data-urlencode 'password=user1' \
 --data-urlencode 'grant_type=password' \
 --data-urlencode 'client_id=configuration'
@@ -45,7 +45,7 @@ echo 'list tenat1 group as user1 with configuration'
 
 json=$( curl -sS --location --request POST 'http://localhost:8080/realms/default/protocol/openid-connect/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
---data-urlencode 'username=user1' \
+--data-urlencode 'username=user1@mail.com' \
 --data-urlencode 'password=user1' \
 --data-urlencode 'grant_type=password' \
 --data-urlencode 'client_id=configuration'
@@ -55,7 +55,7 @@ json=$( curl -sS --location --request POST 'http://localhost:8080/realms/default
 
 token=$( jq -r ".access_token" <<<"$json" )
 
-curl 'http://localhost:8080/admin/realms/default/groups/b691f15d-d475-4c9d-97f7-ee8ec18ae262?briefRepresentation=false' \
+curl 'http://localhost:8080/admin/realms/default/groups/f21430fe-c0eb-4e0a-b873-4a3794b42e87?briefRepresentation=false' \
   -H 'Accept: application/json, text/plain, */*' \
   -H "Authorization: bearer $token" \
   -H 'Cache-Control: no-cache' \
@@ -66,7 +66,7 @@ echo 'list groups as user2 with configuration'
 
 json=$( curl -sS --location --request POST 'http://localhost:8080/realms/default/protocol/openid-connect/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
---data-urlencode 'username=user2' \
+--data-urlencode 'username=user2@mail.com' \
 --data-urlencode 'password=user2' \
 --data-urlencode 'grant_type=password' \
 --data-urlencode 'client_id=configuration'

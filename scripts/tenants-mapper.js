@@ -22,8 +22,12 @@
  *      "id": "a6662e3f-0328-43d1-b5cf-25f3209c57e8"
  *    }
  *  },
- * TODO: enable filter tenant using scope tenant:tenantId
+ * TODO: enable filter tenant using scope tenant:tenantId -> this requires to add scopes to client for each tenant, may be complex.
  * TODO: enable return only tenant lists using scope only-tenants
+ * v0.6:
+ * - added support for roles attached to Tenant (be careful with that! all user
+ *   in a tenant will have such roles)
+ * - added support for composed realm roles
  */
 
 var HashMap = Java.type('java.util.HashMap');
@@ -43,6 +47,20 @@ function scanTenant(group){
             var groups = new ArrayList();
             var roles = new ArrayList();
             var tenantConfiguration = new HashMap();
+            var rep = ModelToRepresentation.toRepresentation(group, true);
+            if (rep.getRealmRoles())
+                addToArrayList(rep.getRealmRoles(), roles, "");
+            if( keycloakSession.getContext().getClient()){
+              var clientId = keycloakSession.getContext().getClient().getClientId();
+              if(rep.getClientRoles().get(clientId)) addToArrayList(rep.getClientRoles().get(clientId), roles, clientId);
+            } else {
+              var clients = realm.getClients();
+              for (i= 0; i<clients.size(); i++){
+                item = clients.get(i);
+                var clientId = item.getClientId();
+                if(rep.getClientRoles().get(clientId)) addToArrayList(rep.getClientRoles().get(clientId), roles, clientId);
+              }
+            }
             tenantConfiguration.put("groups",groups);
             tenantConfiguration.put("roles",roles);
             tenantConfiguration.put("id", group.getId());
@@ -72,9 +90,9 @@ function scanGroups(group){
                 } else {
                     var clients = realm.getClients();
                     for (i= 0; i<clients.size(); i++){
-                        item = clients.get(i);
-                        var clientId = item.getClientId();
-                        if(rep.getClientRoles().get(clientId)) addToArrayList(rep.getClientRoles().get(clientId), roles, clientId);
+                      item = clients.get(i);
+                      var clientId = item.getClientId();
+                      if(rep.getClientRoles().get(clientId)) addToArrayList(rep.getClientRoles().get(clientId), roles, clientId);
                     }
                 }
             }
@@ -116,14 +134,30 @@ function isTenant(group){
 }
 
 function addToArrayList(source, destination, clientid){
-    for (i = 0; i < source.size(); i++){
+    for (var i = 0; i < source.size(); i++){
       if (clientid != "" &&  !destination.contains(clientid + ":" + source.get(i))) {
         destination.add(clientid + ":" + source.get(i));
       } else if (clientid == "" &&  !destination.contains(source.get(i))) {
         destination.add(source.get(i));
+        var role = realm.getRole(source.get(i));
+        processComposedRoles(role.getCompositesStream().toArray(), destination);
       }
     }
-    return destination;
+}
+
+function processComposedRoles(composedRoles, destination){
+  for (var k = 0; k < composedRoles.length; k++){
+    if(composedRoles[k].isClientRole()){
+      var roleName = composedRoles[k].getName();
+      var id = composedRoles[k].getContainer().getClientId();
+      if (!destination.contains(id + ":" + roleName)) destination.add(id + ":" + roleName);
+    } else {
+      var roleName = composedRoles[k].getName();
+      if (!destination.contains(roleName)) destination.add(roleName);
+      if (composedRoles[k].getCompositesStream().toArray().length>0)
+        processComposedRoles(composedRoles[k].getCompositesStream().toArray(), destination);
+    }
+  }
 }
 
 token.setOtherClaims("tenants", tenants);
