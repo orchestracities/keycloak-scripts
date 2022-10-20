@@ -55,7 +55,7 @@ json=$( curl -sS --location --request POST 'http://localhost:8080/realms/default
 
 token=$( jq -r ".access_token" <<<"$json" )
 
-curl 'http://localhost:8080/admin/realms/default/groups/044a3dd3-5997-4e55-b9d1-5625edb8c3b9?briefRepresentation=false' \
+curl 'http://localhost:8080/admin/realms/default/groups/f21430fe-c0eb-4e0a-b873-4a3794b42e87?briefRepresentation=false' \
   -H 'Accept: application/json, text/plain, */*' \
   -H "Authorization: bearer $token" \
   -H 'Cache-Control: no-cache' \
