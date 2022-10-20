@@ -87,6 +87,13 @@ function scanGroups(group){
                 if( keycloakSession.getContext().getClient()){
                     var clientId = keycloakSession.getContext().getClient().getClientId();
                     if(rep.getClientRoles().get(clientId)) addToArrayList(rep.getClientRoles().get(clientId), roles, clientId);
+                } else {
+                    var clients = realm.getClients();
+                    for (i= 0; i<clients.size(); i++){
+                      item = clients.get(i);
+                      var clientId = item.getClientId();
+                      if(rep.getClientRoles().get(clientId)) addToArrayList(rep.getClientRoles().get(clientId), roles, clientId);
+                    }
                 }
             }
         }
