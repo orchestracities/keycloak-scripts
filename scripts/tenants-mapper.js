@@ -22,7 +22,7 @@
  *      "id": "a6662e3f-0328-43d1-b5cf-25f3209c57e8"
  *    }
  *  },
- * TODO: enable filter tenant using scope tenant:tenantId
+ * TODO: enable filter tenant using scope tenant:tenantId -> this requires to add scopes to client for each tenant, may be complex.
  * TODO: enable return only tenant lists using scope only-tenants
  * v0.6:
  * - added support for roles attached to Tenant (be careful with that! all user
