@@ -11,6 +11,7 @@ docker run -d -p 8080:8080 \
   -e KC_FEATURES=scripts  \
   -v $(pwd)/deployments/oc-custom.jar:/opt/keycloak/providers/oc-custom.jar  \
   -v $(pwd)/realm-export.json:/opt/keycloak/data/import/realm-export.json \
+  -v $(pwd)/realm-export-empty.json:/opt/keycloak/data/export/realm-export-empty.json \
   --name kc \
   quay.io/keycloak/keycloak:19.0.1 \
   start-dev --import-realm

@@ -89,4 +89,11 @@ Should you need to update the example realm, you can export a new updated versio
 sh export-realm.sh
 ```
 
+The export `realm-export.json` includes two demo tenants.
+The export `realm-export-empty.json` is clean (includes only demo users).
+
+The script loads always `realm-export.json`, to generate
+the `realm-export-empty.json`, launch start.sh, remove groups in keycloak
+and launch `sh export-realm-empty.sh`
+
 Once the export is completed type `CTRL+C` to exit from the container.
