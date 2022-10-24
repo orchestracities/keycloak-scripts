@@ -50,8 +50,12 @@ function scanTenant(group){
             var rep = ModelToRepresentation.toRepresentation(group, true);
             if (rep.getRealmRoles())
                 addToArrayList(rep.getRealmRoles(), roles, "");
-            if( keycloakSession.getContext().getClient()){
+            if( keycloakSession.getContext().getClient() ){
               var clientId = keycloakSession.getContext().getClient().getClientId();
+              if (clientId == 'api') {
+                if(rep.getClientRoles().get('ngsi')) addToArrayList(rep.getClientRoles().get('ngsi'), roles, 'ngsi');
+                if(rep.getClientRoles().get('iot-agent')) addToArrayList(rep.getClientRoles().get('iot-agent'), roles, 'iot-agent');
+              }
               if(rep.getClientRoles().get(clientId)) addToArrayList(rep.getClientRoles().get(clientId), roles, clientId);
             } else {
               var clients = realm.getClients();
@@ -86,6 +90,10 @@ function scanGroups(group){
                     addToArrayList(rep.getRealmRoles(), roles, "");
                 if( keycloakSession.getContext().getClient()){
                     var clientId = keycloakSession.getContext().getClient().getClientId();
+                    if (clientId == 'api') {
+                      if(rep.getClientRoles().get('ngsi')) addToArrayList(rep.getClientRoles().get('ngsi'), roles, 'ngsi');
+                      if(rep.getClientRoles().get('iot-agent')) addToArrayList(rep.getClientRoles().get('iot-agent'), roles, 'iot-agent');
+                    }
                     if(rep.getClientRoles().get(clientId)) addToArrayList(rep.getClientRoles().get(clientId), roles, clientId);
                 } else {
                     var clients = realm.getClients();
@@ -150,7 +158,14 @@ function processComposedRoles(composedRoles, destination){
     if(composedRoles[k].isClientRole()){
       var roleName = composedRoles[k].getName();
       var id = composedRoles[k].getContainer().getClientId();
-      if (!destination.contains(id + ":" + roleName)) destination.add(id + ":" + roleName);
+      if( keycloakSession.getContext().getClient()){
+        var clientId = keycloakSession.getContext().getClient().getClientId();
+        if (clientId == 'api') {
+          if(id == 'ngsi' && !destination.contains(id + ":" + roleName))  destination.add(id + ":" + roleName);
+          if(id == 'iot-agent' && !destination.contains(id + ":" + roleName))  destination.add(id + ":" + roleName);
+        }
+        if (id == clientId && !destination.contains(id + ":" + roleName)) destination.add(id + ":" + roleName);
+      } else if (!destination.contains(id + ":" + roleName)) destination.add(id + ":" + roleName);
     } else {
       var roleName = composedRoles[k].getName();
       if (!destination.contains(roleName)) destination.add(roleName);
