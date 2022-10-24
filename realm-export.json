@@ -651,7 +651,7 @@
     "attributes" : {
       "tenant" : [ "true" ]
     },
-    "realmRoles" : [ "device" ],
+    "realmRoles" : [ ],
     "clientRoles" : { },
     "subGroups" : [ {
       "id" : "ae5d5ca6-5d61-40a5-a66a-e8eaafa9fc3b",
@@ -682,7 +682,7 @@
       "name" : "Device",
       "path" : "/Demo2/Device",
       "attributes" : { },
-      "realmRoles" : [ ],
+      "realmRoles" : [ "device" ],
       "clientRoles" : { },
       "subGroups" : [ ]
     } ]

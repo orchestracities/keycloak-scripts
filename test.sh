@@ -200,7 +200,7 @@ json=$( curl -sS --location --request POST 'http://localhost:8080/realms/default
 --data-urlencode 'username=user1@mail.com' \
 --data-urlencode 'password=user1' \
 --data-urlencode 'grant_type=password' \
---data-urlencode 'client_id=configuration' )
+--data-urlencode 'client_id=api' )
 
 jq -R 'split(".") | .[1] | @base64d | fromjson' <<< $( jq -r ".access_token" <<<"$json" )
 
